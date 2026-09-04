@@ -1,1 +1,13 @@
-{"name":"cascadia-core","version":"1.0.0","main":"server.js","scripts":{"start":"node server.js"},"dependencies":{"express":"^4.19.2"}}
+{
+  "name": "cascadia-core",
+  "version": "1.0.0",
+  "description": "CASCADIA Autonomous Cross-Domain Crisis Intelligence Engine",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
