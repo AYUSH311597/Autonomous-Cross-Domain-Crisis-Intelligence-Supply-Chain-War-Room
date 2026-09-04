@@ -1,0 +1,40 @@
+---
+- name: Configure CASCADIA Production Node & Deploy Container
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Update apt repository cache
+      apt:
+        update_cache: yes
+
+    - name: Install prerequisite packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - git
+        state: present
+
+    - name: Ensure Docker service is active and enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Deploy CASCADIA Core Container
+      community.docker.docker_container:
+        name: cascadia-app
+        image: node:20-alpine
+        state: started
+        restart_policy: always
+        published_ports:
+          - "8081:8080"
+        command: "node -e 'const express = require(\"express\"); const app = express(); app.get(\"/\", (req,res) => res.send(\"<h1 style=\"\"color:#ef4444;background:#090d16;padding:20px;\"\">CASCADIA AWS CLOUD WAR ROOM IS LIVE</h1>\")); app.listen(8080);'"
